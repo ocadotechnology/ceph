@@ -664,6 +664,7 @@ class RGWQuotaHandlerImpl : public RGWQuotaHandler {
   RGWRados *store;
   RGWBucketStatsCache bucket_stats_cache;
   RGWUserStatsCache user_stats_cache;
+  RGWQuotaInfo default_quota;
 
   int check_quota(const char *entity, RGWQuotaInfo& quota, RGWStorageStats& stats,
                   uint64_t num_objs, uint64_t size_kb) {
@@ -687,12 +688,21 @@ class RGWQuotaHandlerImpl : public RGWQuotaHandler {
     return 0;
   }
 public:
-  RGWQuotaHandlerImpl(RGWRados *_store, bool quota_threads) : store(_store), bucket_stats_cache(_store), user_stats_cache(_store, quota_threads) {}
+  RGWQuotaHandlerImpl(RGWRados *_store, bool quota_threads) : store(_store), bucket_stats_cache(_store), user_stats_cache(_store, quota_threads) {
+    if (_store->ctx()->_conf->rgw_bucket_default_quota_max_objects >= 0) {
+      default_quota.max_objects = _store->ctx()->_conf->rgw_bucket_default_quota_max_objects;
+      default_quota.enabled = true;
+    }
+    if (_store->ctx()->_conf->rgw_bucket_default_quota_max_size >= 0) {
+      default_quota.max_size_kb = _store->ctx()->_conf->rgw_bucket_default_quota_max_size;
+      default_quota.enabled = true;
+    }
+  }
   virtual int check_quota(const string& user, rgw_bucket& bucket,
                           RGWQuotaInfo& user_quota, RGWQuotaInfo& bucket_quota,
 			  uint64_t num_objs, uint64_t size) {
 
-    if (!bucket_quota.enabled && !user_quota.enabled)
+    if (!bucket_quota.enabled && !user_quota.enabled && !default_quota.enabled)
       return 0;
 
     uint64_t size_kb = rgw_rounded_objsize_kb(size);
@@ -723,6 +733,18 @@ public:
         return ret;
 
       ret = check_quota("user", user_quota, user_stats, num_objs, size_kb);
+      if (ret < 0)
+        return ret;
+    }
+
+    if (default_quota.enabled) {
+      RGWStorageStats default_stats;
+
+      ret = bucket_stats_cache.get_stats(user, bucket, default_stats, default_quota);
+      if (ret < 0)
+        return ret;
+
+      ret = check_quota("default", default_quota, default_stats, num_objs, size_kb);
       if (ret < 0)
         return ret;
     }

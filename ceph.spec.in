@@ -105,6 +105,7 @@ BuildRequires:	pkgconfig
 BuildRequires:	python
 BuildRequires:	python-nose
 BuildRequires:	python-requests
+BuildRequires:	python-sphinx
 BuildRequires:	python-virtualenv
 BuildRequires:	snappy-devel
 BuildRequires:	util-linux
@@ -165,13 +166,6 @@ BuildRequires:	FastCGI-devel
 %if 0%{?rhel} || 0%{?fedora}
 BuildRequires:	expat-devel
 BuildRequires:	fcgi-devel
-%endif
-# python-sphinx
-%if 0%{?rhel} > 0 && 0%{?rhel} < 7
-BuildRequires:	python-sphinx10
-%endif
-%if 0%{?fedora} || 0%{?suse_version} || 0%{?rhel} >= 7
-BuildRequires:	python-sphinx
 %endif
 
 

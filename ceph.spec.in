@@ -59,20 +59,20 @@ Requires:	ceph-common = %{epoch}:%{version}-%{release}
 %if 0%{with selinux}
 Requires:	ceph-selinux = %{epoch}:%{version}-%{release}
 %endif
-Requires:	python-rados = %{epoch}:%{version}-%{release}
-Requires:	python-rbd = %{epoch}:%{version}-%{release}
-Requires:	python-cephfs = %{epoch}:%{version}-%{release}
-Requires:	python
-Requires:	python-requests
-Requires:	grep
-Requires:	xfsprogs
-Requires:	logrotate
-Requires:	parted
-Requires:	util-linux
-Requires:	hdparm
 Requires:	cryptsetup
 Requires:	findutils
+Requires:	grep
+Requires:	hdparm
+Requires:	logrotate
+Requires:	parted
+Requires:	python
+Requires:	python-cephfs = %{epoch}:%{version}-%{release}
+Requires:	python-rados = %{epoch}:%{version}-%{release}
+Requires:	python-rbd = %{epoch}:%{version}-%{release}
+Requires:	python-requests
+Requires:	util-linux
 Requires:	which
+Requires:	xfsprogs
 Requires(post):	binutils
 %if 0%{with cephfs_java}
 BuildRequires:	java-devel
@@ -83,21 +83,21 @@ BuildRequires:	checkpolicy
 BuildRequires:	selinux-policy-devel
 BuildRequires:	/usr/share/selinux/devel/policyhelp
 %endif
-BuildRequires:	gcc-c++
 BuildRequires:	boost-devel
-BuildRequires:  cmake
+BuildRequires:	cmake
 BuildRequires:	cryptsetup
 BuildRequires:	fuse-devel
+BuildRequires:	gcc-c++
 BuildRequires:	gdbm
 BuildRequires:	hdparm
 BuildRequires:	leveldb-devel > 1.2
 BuildRequires:	libaio-devel
+BuildRequires:	libblkid-devel >= 2.17
 BuildRequires:	libcurl-devel
 BuildRequires:	libedit-devel
-BuildRequires:	libxml2-devel
-BuildRequires:	libblkid-devel >= 2.17
-BuildRequires:	libudev-devel
 BuildRequires:	libtool
+BuildRequires:	libudev-devel
+BuildRequires:	libxml2-devel
 BuildRequires:	make
 BuildRequires:	parted
 BuildRequires:	perl
@@ -118,31 +118,31 @@ BuildRequires:	yasm
 # distro-conditional dependencies
 #################################################################################
 %if 0%{?suse_version}
-BuildRequires:  pkgconfig(systemd)
-BuildRequires:	systemd-rpm-macros
 %{?systemd_requires}
 PreReq:		%fillup_prereq
-Requires:	python-Flask
-BuildRequires:	net-tools
-BuildRequires:	libbz2-devel
 Requires:	gptfdisk
+Requires:	python-Flask
 %if 0%{with tcmalloc}
 BuildRequires:	gperftools-devel
 %endif
-BuildRequires:	mozilla-nss-devel
 BuildRequires:	keyutils-devel
 BuildRequires:	libatomic-ops-devel
+BuildRequires:	libbz2-devel
+BuildRequires:	mozilla-nss-devel
+BuildRequires:	net-tools
+BuildRequires:	pkgconfig(systemd)
+BuildRequires:	systemd-rpm-macros
 %endif
 %if 0%{?fedora} || 0%{?rhel}
+Requires:	gdisk
+Requires:	python-flask
 Requires:	systemd
 BuildRequires:  boost-random
 BuildRequires:  bzip2-devel
-BuildRequires:	nss-devel
+BuildRequires:	gperftools-devel
 BuildRequires:	keyutils-libs-devel
 BuildRequires:	libatomic_ops-devel
-Requires:	gdisk
-BuildRequires:	gperftools-devel
-Requires:	python-flask
+BuildRequires:	nss-devel
 %endif
 # lttng and babeltrace for rbd-replay-prep
 %if 0%{?fedora} || 0%{?rhel} == 6
@@ -175,11 +175,11 @@ on commodity hardware and delivers object, block and file system storage.
 %package -n ceph-common
 Summary:	Ceph Common
 Group:		System Environment/Base
-Requires:	librbd1 = %{epoch}:%{version}-%{release}
 Requires:	librados2 = %{epoch}:%{version}-%{release}
+Requires:	librbd1 = %{epoch}:%{version}-%{release}
+Requires:	python-cephfs = %{epoch}:%{version}-%{release}
 Requires:	python-rados = %{epoch}:%{version}-%{release}
 Requires:	python-rbd = %{epoch}:%{version}-%{release}
-Requires:	python-cephfs = %{epoch}:%{version}-%{release}
 Requires:	python-requests
 %{?systemd_requires}
 %if 0%{?rhel} || 0%{?fedora}

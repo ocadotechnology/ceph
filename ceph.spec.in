@@ -128,10 +128,12 @@ BuildRequires:	gperftools-devel
 BuildRequires:	keyutils-devel
 BuildRequires:	libatomic-ops-devel
 BuildRequires:	libbz2-devel
+BuildRequires:	libexpat-devel
 BuildRequires:	mozilla-nss-devel
 BuildRequires:	net-tools
 BuildRequires:	pkgconfig(systemd)
 BuildRequires:	systemd-rpm-macros
+BuildRequires:	FastCGI-devel
 %endif
 %if 0%{?fedora} || 0%{?rhel}
 Requires:	gdisk
@@ -139,6 +141,8 @@ Requires:	python-flask
 Requires:	systemd
 BuildRequires:  boost-random
 BuildRequires:  bzip2-devel
+BuildRequires:	expat-devel
+BuildRequires:	fcgi-devel
 BuildRequires:	gperftools-devel
 BuildRequires:	keyutils-libs-devel
 BuildRequires:	libatomic_ops-devel
@@ -152,15 +156,6 @@ BuildRequires:	libbabeltrace-devel
 %if 0%{?suse_version} == 1315
 BuildRequires:	lttng-ust-devel
 BuildRequires:  babeltrace-devel
-%endif
-# expat and fastcgi for RGW
-%if 0%{?suse_version}
-BuildRequires:	libexpat-devel
-BuildRequires:	FastCGI-devel
-%endif
-%if 0%{?rhel} || 0%{?fedora}
-BuildRequires:	expat-devel
-BuildRequires:	fcgi-devel
 %endif
 
 

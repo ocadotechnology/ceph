@@ -132,7 +132,8 @@ BuildRequires:	gperftools-devel
 BuildRequires:	mozilla-nss-devel
 BuildRequires:	keyutils-devel
 BuildRequires:	libatomic-ops-devel
-%else
+%endif
+%if 0%{?fedora} || 0%{?rhel}
 Requires:	systemd
 BuildRequires:  bzip2-devel
 BuildRequires:	nss-devel

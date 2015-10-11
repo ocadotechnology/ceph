@@ -627,8 +627,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 
-%post
-/sbin/ldconfig
+%post -p /sbin/ldconfig
 %if 0%{?suse_version}
   %fillup_only
   %service_add_post ceph.target
@@ -649,8 +648,7 @@ if [ $1 = 0 ] ; then
   fi
 fi
 
-%postun
-/sbin/ldconfig
+%postun -p /sbin/ldconfig
 if [ $1 = 1 ] ; then
   # Restart on upgrade, but only if "CEPH_AUTO_RESTART_ON_UPGRADE" is set to
   # "yes". In any case: if units are not running, do not touch them.
@@ -867,8 +865,7 @@ fi
 %config %{_sysconfdir}/bash_completion.d/radosgw-admin
 %dir %{_localstatedir}/lib/ceph/radosgw
 
-%post radosgw
-/sbin/ldconfig
+%post radosgw -p /sbin/ldconfig
 %if 0%{?suse_version}
   # explicit systemctl daemon-reload (that's the only relevant bit of
   # service_add_post; the rest is all sysvinit --> systemd migration which
@@ -888,8 +885,7 @@ if [ $1 = 0 ] ; then
   fi
 fi
 
-%postun radosgw
-/sbin/ldconfig
+%postun radosgw -p /sbin/ldconfig
 if [ $1 = 1 ] ; then
   # Restart on upgrade, but only if "CEPH_AUTO_RESTART_ON_UPGRADE" is set to
   # "yes". In any case: if units are not running, do not touch them.
@@ -922,11 +918,9 @@ fi
 %defattr(-,root,root,-)
 %{_libdir}/librados.so.*
 
-%post -n librados2
-/sbin/ldconfig
+%post -n librados2 -p /sbin/ldconfig
 
-%postun -n librados2
-/sbin/ldconfig
+%postun -n librados2 -p /sbin/ldconfig
 
 #################################################################################
 %files -n librados2-devel
@@ -952,11 +946,9 @@ fi
 %defattr(-,root,root,-)
 %{_libdir}/libradosstriper.so.*
 
-%post -n libradosstriper1
-/sbin/ldconfig
+%post -n libradosstriper1 -p /sbin/ldconfig
 
-%postun -n libradosstriper1
-/sbin/ldconfig
+%postun -n libradosstriper1 -p /sbin/ldconfig
 
 #################################################################################
 %files -n libradosstriper1-devel
@@ -971,13 +963,11 @@ fi
 %defattr(-,root,root,-)
 %{_libdir}/librbd.so.*
 
-%post -n librbd1
-/sbin/ldconfig
+%post -n librbd1 -p /sbin/ldconfig
 mkdir -p /usr/lib64/qemu/
 ln -sf %{_libdir}/librbd.so.1 /usr/lib64/qemu/librbd.so.1
 
-%postun -n librbd1
-/sbin/ldconfig
+%postun -n librbd1 -p /sbin/ldconfig
 
 #################################################################################
 %files -n librbd1-devel
@@ -998,11 +988,9 @@ ln -sf %{_libdir}/librbd.so.1 /usr/lib64/qemu/librbd.so.1
 %defattr(-,root,root,-)
 %{_libdir}/libcephfs.so.*
 
-%post -n libcephfs1
-/sbin/ldconfig
+%post -n libcephfs1 -p /sbin/ldconfig
 
-%postun -n libcephfs1
-/sbin/ldconfig
+%postun -n libcephfs1 -p /sbin/ldconfig
 
 #################################################################################
 %files -n libcephfs1-devel
@@ -1056,11 +1044,9 @@ ln -sf %{_libdir}/librbd.so.1 /usr/lib64/qemu/librbd.so.1
 %defattr(-,root,root,-)
 %{_libdir}/libcephfs_jni.so.*
 
-%post -n libcephfs_jni1
-/sbin/ldconfig
+%post -n libcephfs_jni1 -p /sbin/ldconfig
 
-%postun -n libcephfs_jni1
-/sbin/ldconfig
+%postun -n libcephfs_jni1 -p /sbin/ldconfig
 
 #################################################################################
 %files -n libcephfs_jni1-devel

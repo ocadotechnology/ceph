@@ -124,14 +124,9 @@ PreReq:		%fillup_prereq
 Requires:	python-Flask
 BuildRequires:	net-tools
 BuildRequires:	libbz2-devel
-%if 0%{?suse_version} > 1210
 Requires:	gptfdisk
 %if 0%{with tcmalloc}
 BuildRequires:	gperftools-devel
-%endif
-%else
-Requires:	scsirastools
-BuildRequires:	google-perftools-devel
 %endif
 BuildRequires:	mozilla-nss-devel
 BuildRequires:	keyutils-devel
@@ -724,11 +719,7 @@ fi
 %{_sbindir}/ceph-disk-udev
 %{_sbindir}/ceph-create-keys
 %{_sbindir}/rcceph
-%if 0%{?rhel} >= 7 || 0%{?fedora} || 0%{?suse_version}
 %{_sbindir}/mount.ceph
-%else
-/sbin/mount.ceph
-%endif
 %dir %{_libdir}/ceph
 %{_libdir}/ceph/ceph_common.sh
 %{_libexecdir}/ceph/ceph-osd-prestart.sh
@@ -868,11 +859,7 @@ fi
 %defattr(-,root,root,-)
 %{_bindir}/ceph-fuse
 %{_mandir}/man8/ceph-fuse.8*
-%if 0%{?rhel} >= 7 || 0%{?fedora} || 0%{?suse_version}
 %{_sbindir}/mount.fuse.ceph
-%else
-/sbin/mount.fuse.ceph
-%endif
 
 #################################################################################
 %files -n rbd-fuse

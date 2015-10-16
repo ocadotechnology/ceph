@@ -1653,12 +1653,13 @@ int NewStore::collection_list(
     ghobject_t oid;
     int r = get_key_object(it->key(), &oid);
     assert(r == 0);
-    ls->push_back(oid);
     if (ls->size() >= (unsigned)max) {
+      dout(20) << __func__ << " reached max " << max << dendl;
       *pnext = oid;
       set_next = true;
       break;
     }
+    ls->push_back(oid);
     it->next();
   }
   if (!set_next) {

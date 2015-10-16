@@ -764,6 +764,9 @@ protected:
 			     waiting_for_degraded_object,
 			     waiting_for_blocked_object;
 
+  set<
+    hobject_t,
+    hobject_t::BitwiseComparator> objects_blocked_on_cache_full;
   map<
     hobject_t,
     snapid_t,
@@ -1068,6 +1071,7 @@ public:
       active(false), queue_snap_trim(false),
       waiting_on(0), shallow_errors(0), deep_errors(0), fixed(0),
       must_scrub(false), must_deep_scrub(false), must_repair(false),
+      auto_repair(false),
       num_digest_updates_pending(0),
       state(INACTIVE),
       deep(false),
@@ -1095,6 +1099,9 @@ public:
 
     // flags to indicate explicitly requested scrubs (by admin)
     bool must_scrub, must_deep_scrub, must_repair;
+
+    // this flag indicates whether we would like to do auto-repair of the PG or not
+    bool auto_repair;
 
     // Maps from objects with errors to missing/inconsistent peers
     map<hobject_t, set<pg_shard_t>, hobject_t::BitwiseComparator> missing;
@@ -1184,6 +1191,7 @@ public:
       must_scrub = false;
       must_deep_scrub = false;
       must_repair = false;
+      auto_repair = false;
 
       state = PG::Scrubber::INACTIVE;
       start = hobject_t();
@@ -1214,7 +1222,10 @@ public:
   void scrub(epoch_t queued, ThreadPool::TPHandle &handle);
   void chunky_scrub(ThreadPool::TPHandle &handle);
   void scrub_compare_maps();
-  void scrub_process_inconsistent();
+  /**
+   * return true if any inconsistency/missing is repaired, false otherwise
+   */
+  bool scrub_process_inconsistent();
   void scrub_finish();
   void scrub_clear_state();
   void _scan_snaps(ScrubMap &map);

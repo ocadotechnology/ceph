@@ -12228,11 +12228,6 @@ void ReplicatedPG::_scrub(
 			       << " snaps.seq not set";
 	    ++scrubber.shallow_errors;
           }
-	  if (snapset.get().snaps.empty()) {
-	    osd->clog->error() << mode << " " << info.pgid << " " << soid
-			       << " snaps empty";
-	    ++scrubber.shallow_errors;
-	  }
 	}
 
 	if (soid.is_head() && !snapset.get().head_exists) {

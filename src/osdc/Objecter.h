@@ -1123,6 +1123,7 @@ private:
 
   void schedule_tick();
   void tick();
+  void update_crush_location();
 
   class RequestStateHook : public AdminSocketHook {
     Objecter *m_objecter;
